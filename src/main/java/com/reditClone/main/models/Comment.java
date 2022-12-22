@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.Instant;
 
 import static javax.persistence.FetchType.LAZY;
@@ -23,9 +26,11 @@ public class Comment {
     private String text;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "postId", referencedColumnName = "postId")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Post post;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 }

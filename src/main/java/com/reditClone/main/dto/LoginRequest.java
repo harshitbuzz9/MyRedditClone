@@ -1,7 +1,7 @@
 package com.reditClone.main.dto;
 
 
-import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor; 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

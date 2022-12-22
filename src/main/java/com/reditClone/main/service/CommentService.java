@@ -2,11 +2,9 @@ package com.reditClone.main.service;
 
 import java.time.Instant;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.reditClone.main.dto.CommentRequest;
-import com.reditClone.main.exceptions.CommentNotFoundException;
 import com.reditClone.main.models.Comment;
 import com.reditClone.main.models.NotificationEmail;
 import com.reditClone.main.models.Post;
@@ -41,13 +39,12 @@ public class CommentService {
 				.orElseThrow(() -> new PostNotFoundException("Error user not found"));
 		comment.setPost(post);
 		comment.setText(commentRequest.getText());
-		comment.setId(commentRequest.getPostId());
 		comment.setCreatedDate(Instant.now());
 		comment.setUser(user);
 		this.commentRepository.save(comment);
-		String message = mailContentBuilder
-				.build(post.getUser().getUsername() + " posted a comment on your post." + POST_URL);
-		sendCommentNotification(message, post.getUser());
+		//String message = mailContentBuilder
+			//	.build(post.getUser().getUsername() + " posted a comment on your post." + POST_URL);
+		//sendCommentNotification(message, post.getUser());
 	}
 
 	private void sendCommentNotification(String message, User user) {
@@ -56,14 +53,13 @@ public class CommentService {
 	}
 
 	public List<Comment> getAllCommentsForPost(Long postId) {
-		Post post=this.postRepository.findById(postId)
-		.orElseThrow(() -> new PostNotFoundException("Post not found"));
+		Post post = this.postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException("Post not found"));
 		return commentRepository.findByPost(post);
 	}
-	
-	public List<Comment> getAllCommentsForUser(String username){
-		User user=this.userRepository.findByUsername(username)
-				.orElseThrow(()->new UserNotFoundException(username+"User not found"));
-	    return this.commentRepository.findAllByUser(user);
+
+	public List<Comment> getAllCommentsForUser(String username) {
+		User user = this.userRepository.findByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username + "User not found"));
+		return this.commentRepository.findAllByUser(user);
 	}
 }
