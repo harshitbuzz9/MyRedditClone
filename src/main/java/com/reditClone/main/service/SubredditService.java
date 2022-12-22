@@ -31,13 +31,11 @@ public class SubredditService {
 		Subreddit subreddit=new Subreddit();
 		User user = userRepository.findByUsername(subredditDto.getUsername())
 				.orElseThrow(() -> new PostNotFoundException("Error user not found"));
-		System.out.println(user.getEmail());
-		subreddit.setName(subredditDto.getUsername());
+		subreddit.setName(subredditDto.getSubRedditName());
 		subreddit.setDescription(subredditDto.getDescription());
 		subreddit.setCreatedDate(Instant.now());
 		subreddit.setUser(user);
 		subredditRepository.save(subreddit);
-		
 		return subredditDto;
 	}
 
